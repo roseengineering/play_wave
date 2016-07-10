@@ -1,6 +1,5 @@
 *.o
 *~
 play_wave
-out.wav
-notes.txt
+*.wav
 
