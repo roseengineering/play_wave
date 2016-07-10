@@ -9,7 +9,7 @@ to a WAVE file.  The sample rate, the recording start time, and the
 frequency for the capture are embedded in the WAVE header.
 
 In addition, the PCM data stream is now 16 bits per sample instead of
-8 bits.  The default sampling was also changed to 2MSPS from 2.048MSPS.
+8 bits. 
 
 Motivation
 -----------

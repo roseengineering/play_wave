@@ -27,7 +27,7 @@
 #include <unistd.h>
 #include "mirsdrapi-rsp.h"
 
-#define DEFAULT_SAMPLE_RATE             2000000
+#define DEFAULT_SAMPLE_RATE             2048000
 #define DEFAULT_BUF_LENGTH              (336 * 2) // (16 * 16384)
 #define MINIMAL_BUF_LENGTH              672 // 512
 #define MAXIMAL_BUF_LENGTH              (256 * 16384)
@@ -72,7 +72,7 @@ void usage(void)
     fprintf(stderr,
             "play_sdr, an I/Q recorder for SDRplay RSP receivers\n\n"
             "Usage:\t -f frequency_to_tune_to [Hz]\n"
-            "\t[-s samplerate (default: 2000000 Hz)]\n"
+            "\t[-s samplerate (default: 2048000 Hz)]\n"
             "\t[-g gain (default: 50)]\n"
             "\t[-n number of samples to read (default: 0, infinite)]\n"
             "\t[-R enable gain reduction (default: 0, disabled)]\n"
