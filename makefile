@@ -1,5 +1,5 @@
 CFLAGS?=-O2 -g -Wall
-LDLIBS+= -lmirsdrapi-rsp
+LDLIBS+=-lmirsdrapi-rsp -lm
 CC?=gcc
 PROGNAME=play_wave
 

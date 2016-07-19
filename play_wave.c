@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 
 #include <unistd.h>
 #include "mirsdrapi-rsp.h"
@@ -82,6 +83,7 @@ void usage(void)
 }
 
 
+//////////////////////////////////////
 
 // datetime
 
@@ -195,6 +197,15 @@ void wave_header(FILE *file, uint32_t samp_rate, uint32_t frequency, uint32_t bi
     if (fwrite(&chunk, 1, sizeof(chunk_t), file) != sizeof(chunk_t)) exit(1);
 }
 
+float db(float x)
+{
+    return 10 * logf(x);    
+}
+
+int interval_seconds = 2; 
+
+//////////////////////////////////////
+
 
 int main(int argc, char **argv)
 {
@@ -284,8 +295,18 @@ int main(int argc, char **argv)
             goto out;
         }
     }
-    
+   
+
+    //////////////////////////////////////////
+
+    int interval = 0;
+    float ipeak = 0, qpeak = 0;
+    float iavg = 0, qavg = 0;
+
     wave_header(file, samp_rate, frequency, 16);
+
+    //////////////////////////////////////////
+
 
     if (rspMode == 1){
         mir_sdr_SetParam(201,1);
@@ -349,6 +370,32 @@ int main(int argc, char **argv)
             buffer[j++] = ibuf[i];
             buffer[j++] = qbuf[i];
         }
+
+        //////////////////////////////////////////
+
+        for (i=0; i < samplesPerPacket; i++)
+        {
+            float ival = (float) ibuf[i] / 32768;
+            float qval = (float) qbuf[i] / 32768;
+            ival = ival * ival;
+            qval = qval * qval;
+            iavg += ival;
+            qavg += qval;
+            if (ival > ipeak) ipeak = ival;
+            if (qval > qpeak) qpeak = qval;
+        }
+
+        interval += samplesPerPacket;
+        if (interval > samp_rate * interval_seconds){
+            iavg /= interval;
+            qavg /= interval;
+            fprintf(stderr, "PEAK %5.1f | %5.1f dBFS   PAR %4.1f | %4.1f dB\n",
+                    db(ipeak), db(qpeak), db(ipeak / iavg), db(qpeak / qavg));
+            interval = 0;
+            ipeak = qpeak = iavg = qavg = 0; 
+        };
+
+        //////////////////////////////////////////
 
         n_read = (samplesPerPacket * 2);
         
