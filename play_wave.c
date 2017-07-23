@@ -71,8 +71,9 @@ double atofs(char *s)
 void usage(void)
 {
     fprintf(stderr,
-            "play_sdr, an I/Q recorder for SDRplay RSP receivers\n\n"
-            "Usage:\t -f frequency_to_tune_to [Hz]\n"
+            "play_wave, I/Q WAVE recorder for SDRplay RSP receivers\n\n"
+            "Usage: play_wave\n"
+            "\t -f frequency_to_tune_to [Hz]\n"
             "\t[-s samplerate (default: 2048000 Hz)]\n"
             "\t[-g gain (default: 50)]\n"
             "\t[-n number of samples to read (default: 0, infinite)]\n"
